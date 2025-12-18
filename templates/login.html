@@ -1,0 +1,114 @@
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='scripts/login.js') }}"></script>
+{% endblock %}
+
+<head>
+  <title>CARE</title>
+</head>
+
+{% block content %}
+<div class="container">
+  <div class="card">
+
+    <!-- Back to account type -->
+    <a href="{{ url_for('account_type') }}" class="back-pill">
+      <span class="back-icon">←</span>
+      <span class="back-text">Back to account type</span>
+    </a>
+
+    <section id="view-login" class="view">
+      <div class="split-layout">
+        <div class="split-left">
+          <div class="logo">
+            <div class="webIcon">❤</div>
+            <div class="brand-name">CARES</div>
+          </div>
+
+          
+          <h2>WELCOME TO BARANGAY CARES!</h2>
+          <p>Stay connected with a platform that brings essential services closer to you, check health updates, explore programs, and access community information with ease.</p>
+
+          <div class="left-feature">
+            <div class="left-feature-icon">🔒</div>
+            <span>Your trusted portal for secure and seamless access.</span>
+          </div>
+
+          <div class="left-feature">
+            <div class="left-feature-icon">🏠</div>
+            <span>Stay closer to your community.</span>
+          </div>
+
+          <div class="left-feature">
+            <div class="left-feature-icon">💼</div>
+            <span> Access your official dashboard instantly.</span>
+          </div>
+        </div>
+
+        <div class="split-right">
+          <div>
+            <div class="right-header">
+              <h2>Login</h2>
+              <p id="loginAccountLabel">
+                {% if role == 'official' %}OFFICIALS ACCOUNT{% else %}RESIDENT ACCOUNT{% endif %}
+              </p>
+            </div>
+
+            <form method="POST" action="{{ url_for('login_bp.login', role=role) }}">
+              <div class="field-group">
+                <span class="field-label">Email</span>
+                <div class="field-control">
+                  <span class="field-icon">✉</span>
+                  <input type="email" name="email" placeholder="Enter your email" required />
+                </div>
+              </div>
+
+              <div class="field-group">
+  <span class="field-label">Password</span>
+  <div class="field-control">
+    <span class="field-icon">🔒</span>
+    <input id="loginPassword" type="password" name="password"
+           placeholder="Enter your password" required />
+    <button type="button"
+            class="toggle-password"
+            data-target="loginPassword"
+            aria-label="Show password">
+      👁
+    </button>
+  </div>
+</div>
+
+
+              <button type="submit" class="primary-btn">Login</button>
+            </form>
+          </div>
+
+          <p class="inline-text">
+            Don’t have an account?
+            {% if role == 'official' %}
+              <button
+                type="button"
+                id="goToSignUp"
+                data-url="{{ url_for('login_bp.signup_brgy_official') }}"
+                onclick="window.location.href=this.dataset.url">
+                Sign Up
+              </button>
+            {% elif role == 'resident' %}
+              <button
+                type="button"
+                id="goToSignUp"
+                data-url="{{ url_for('login_bp.signup_resident') }}"
+                onclick="window.location.href=this.dataset.url">
+                Sign Up
+              </button>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

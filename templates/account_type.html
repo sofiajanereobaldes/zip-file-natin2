@@ -1,0 +1,63 @@
+{%block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/account_type.css') }}">
+{%endblock%}
+
+{%block script %}
+<script src="{{ url_for('static', filename='script/account_type.js') }}"></script>
+{%endblock%}
+
+<head>
+  <title>CARE</title>
+</head>
+
+{% block content %}
+
+<div class="page-wrapper">
+  <div class="card">
+
+    <!--BACK BUTTON-->
+    <button id="backBtn" class="back-link hidden" type="button">Back</button>
+
+    <!--LOGO-->
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/CARES LOGO.png') }}" alt="CARES logo" class="logo-image">
+    </div>
+
+    <!--ACCOUNT TYPE SELECTION-->
+    <section id="view-select" class="view active">
+      <div class="center-header">
+        <h1>Welcome to Our Platform</h1>
+        <p>Please select your account type to continue</p>
+      </div>
+
+      <div class="account-type">
+        <div class="account-card" data-account="Officials">
+          <div class="account-icon">🏛</div>
+          <div>
+            <a href="{{ url_for('login_bp.login', role='official') }}">
+              <div class="account-title">Officials</div>
+              <div class="account-desc">
+                Access administrative tools and manage community services efficiently.
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="account-card" data-account="Residents">
+          <div class="account-icon">ጸ</div>
+          <div>
+            <a href="{{ url_for('login_bp.login', role='resident') }}">
+              <div class="account-title">Residents</div>
+              <div class="account-desc">
+                Connect with your community and access local services seamlessly.
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+{% endblock %}

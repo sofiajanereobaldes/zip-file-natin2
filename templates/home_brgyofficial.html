@@ -1,0 +1,230 @@
+{% extends "base.html" %} <!--jinja code-->
+
+{%block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_brgyofficial.css') }}">
+{%endblock%}
+
+{% block header %}
+<header class="header" id="mainHeader">
+    <div class="header-left">
+      <div class="logo">
+            <img src="{{ url_for('static', filename='images/cares-high-resolution-logo-transparent (2).png') }}" alt="CARES logo" class="logo-image">
+          </div>
+      <div class="logo-text">
+        <span>CARES</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="{{ url_for('homepage_bp.home_brgyofficial') }}" class="active">Home</a>
+      <a href="{{ url_for('announcement_bp.announcement') }}">Announcements</a>
+      <a href="{{ url_for('checkup_bp.check_up_log_official') }}">Check-Up Log</a>
+    </nav>
+
+  <div class="header-right">
+    <div class="profile-chip" id="profileChip">
+      <div class="avatar">{{ user.first_name[0] }}{{ user.last_name[0] }}</div>
+      <div class="profile-info">
+        <span class="name">{{ user.first_name }} {{ user.last_name }}</span>
+        <span class="role">{{ user.position }}</span>
+      </div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="profile-menu" id="profileMenu">
+    <ul>
+      <li data-action="logout">Log Out</li>
+    </ul>
+  </div>
+  </div>
+</header>
+{% endblock %}
+
+
+{% block content %}
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <img class="hero-bg" src="{{ url_for('static', filename='images/6187958781958884322.jpg') }}" alt="Background">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-grid">
+      <div>
+        <div class="hero-pill">
+          <div class="hero-pill-icon">🏥</div>
+          <span>Community Health &amp; Education</span>
+        </div>
+
+        <h1 class="hero-title">
+          Barangay Health and<br />
+          Education<span class="accent"> Management</span><br />
+          System
+        </h1>
+
+        <p class="hero-subtitle">
+          Coordinate medical services, track community check-ups, and share important announcements with residents
+          through one secure dashboard. Building healthier communities together.
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+  
+
+  <!-- Latest Announcements -->
+  <section class="section" id="announcements">
+    <div class="section-inner">
+      <div class="section-header">
+        <div>
+          <h2>Latest Updates</h2>
+          <p>Stay informed with important health announcements and community updates.</p>
+        </div>
+      </div>
+
+      <div class="announcements-grid">
+  {% for ann in announcements %}
+    <article class="card">
+      {% if ann.image_url %}
+        <img class="card-image" src="{{ ann.image_url }}" alt="{{ ann.title }}">
+      {% else %}
+        <img class="card-image"
+             src="{{ url_for('static', filename='images/default-announcement.jpg') }}"
+             alt="{{ ann.title }}">
+      {% endif %}
+
+      <div class="card-body">
+        <div class="card-meta-row">
+          <div>
+            {% if ann.is_pinned %}
+              <div class="badge-pinned">
+                <span class="icon">📌</span>
+                <span>Pinned</span>
+              </div>
+            {% endif %}
+          </div>
+          <span>{{ ann.date_posted.strftime('%b %d, %Y') }}</span>
+        </div>
+
+        <h3 class="card-title">{{ ann.title }}</h3>
+        <p class="card-text">{{ ann.content }}</p>
+
+        <div class="card-footer">
+          <a href="{{ url_for('announcement_bp.announcement', announcement_id=ann.id) }}"
+             class="link-inline">
+            <span>Learn More</span>
+            <span>→</span>
+          </a>
+          <div class="card-footer-right">
+            <div class="dot"></div>
+            <span>{{ ann.category or 'Announcement' }}</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  {% else %}
+    <p>No announcements yet.</p>
+  {% endfor %}
+</div>
+      <div class="view-all-wrap">
+        <button class="view-all-btn" data-ann-url="{{ url_for('announcement_bp.announcement') }}">
+          <span>View All Announcements</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <!-- Contact Information -->
+      <div>
+        <h4>Contact Information</h4>
+        <div class="footer-contact-item">
+          <span class="footer-contact-icon">📍</span>
+          <p>
+            Barangay San Miguel Health Center<br />
+            123 Sampaguita Street, Barangay San Miguel
+          </p>
+        </div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-icon">📞</span>
+          <p>(032) 123-4567</p>
+        </div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-icon">✉</span>
+          <p>health@sanmiguel.gov</p>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <p>Follow Us</p>
+          <div class="footer-social">
+            <div class="social-icon">f</div>
+            <div class="social-icon">t</div>
+            <div class="social-icon">▶</div>
+            <div class="social-icon">◎</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barangay Officials -->
+      <div>
+        <h4>Barangay Officials</h4>
+        <p style="margin-bottom: 6px;">Health Officers</p>
+        <ul class="footer-list">
+          <li>Dr. Ana Santos – Municipal Health Officer</li>
+          <li>Jose Reyes – Barangay Captain</li>
+          <li>Lisa Martinez – Youth Coordinator</li>
+        </ul>
+
+        <p style="margin: 12px 0 6px;">Emergency Contacts</p>
+        <ul class="footer-list">
+          <li>Emergency Hotline: 911</li>
+          <li>Health Emergency: (032) 456-7890</li>
+          <li>Barangay Hall: (032) 234-5678</li>
+        </ul>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4>Quick Links</h4>
+        <ul class="footer-list">
+          <li><a href="#">Health Services</a></li>
+          <li><a href="#">Education Programs</a></li>
+          <li><a href="#">Book Appointment</a></li>
+          <li><a href="#">Health Resources</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Business Hours -->
+      <div>
+        <h4>Business Hours</h4>
+        <div class="business-hours">
+          <p>Monday – Friday: 8:00 AM – 5:00 PM</p>
+          <p>Saturday: 8:00 AM – 12:00 PM</p>
+          <p>Sunday: Emergency Only</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Barangay San Miguel Health Center. All rights reserved </span>
+      <span>Barangay Health and Education Management System – CARES</span>
+    </div>
+  </div>
+</footer>
+{% endblock %}
+
+{% block script %}
+<script>
+  const LOGOUT_URL = {{ url_for('api_logout') | tojson }};
+  //const LOGIN_OFFICIAL_URL = {{ url_for('login_bp.login', role='official') | tojson }};
+  const LOGIN_OFFICIAL_URL = {{ url_for('login_bp.login', role='official' ) | tojson }};
+</script>
+<script src="{{ url_for('static', filename='scripts/home_brgyofficial.js') }}"></script>
+{% endblock %}
+ 
